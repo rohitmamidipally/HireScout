@@ -969,15 +969,10 @@ async function runAgent() {
   try {
     // Run searches for each role
     for (const role of roles) {
-      const searchIndustry = industry
-        ? `${industry} ${location}`
-        : location;
+      log(`Searching Google for real "${role}" posts in ${location}…`);
 
-      log(`Searching for "${role}" in ${location}…`);
-
-      // Discover leads
-      const leads = await discoverLeads(key, role, searchIndustry);
-      log(`  Found ${leads.length} leads ✓`, 'ok');
+      // Discover real leads via Google
+      const leads = await discoverLeads(key, role, location);
 
       // Score
       log(`  Scoring fit against your resume…`);
@@ -1011,27 +1006,53 @@ async function runAgent() {
   document.getElementById('run-btn').disabled = false;
 }
 
-// ── Discover leads ─────────────────────────────────────────────────────────
+// ── Discover leads — REAL Google search ────────────────────────────────────
+const SEARCH_URL = 'https://hirescout-proxy.rohit-united.workers.dev/v1/search';
+
 async function discoverLeads(key, role, searchContext) {
-  const prompt = `You are simulating a LinkedIn post discovery agent finding hiring managers.
-Generate 5 realistic hiring manager leads actively posting about hiring a "${role}" in "${searchContext}".
+  // Step 1: Get real LinkedIn posts from Google
+  const resp = await fetch(SEARCH_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role, location: searchContext, industry: '' })
+  });
 
-Return a JSON array. Each object MUST have these exact keys (keep strings SHORT):
-- id: initials + 3 digits e.g. "JD042"
-- name: full name
-- title: their job title (max 6 words)
-- company: company name
-- companySize: e.g. "Series B · 120 people"
-- postSnippet: 1-2 sentence LinkedIn post about this specific hiring need (max 180 chars, make it sound authentic)
-- postUrl: realistic LinkedIn post URL like https://linkedin.com/posts/firstname-lastname-activity-1234567890
-- postDate: e.g. "1 day ago" or "3 days ago"
-- connections: "1st" or "2nd" or "3rd"
-- mutualConnections: integer 0-4
-- techStack: array of 3 relevant tools/technologies
+  const data = await resp.json();
+  if (data.error) throw new Error(data.error);
 
-Return ONLY the raw JSON array. No markdown fences, no explanation.`;
+  const results = data.results || [];
+  if (results.length === 0) throw new Error('No LinkedIn posts found for this search. Try a different role or location.');
 
-  return await callClaude(key, prompt);
+  log(`  Found ${results.length} real LinkedIn posts via Google ✓`, 'ok');
+  log(`  Enriching with Claude…`);
+
+  // Step 2: Use Claude to extract structured info from real Google snippets
+  const prompt = `You are parsing real Google search results for LinkedIn posts to extract hiring manager info.
+
+For each result below, extract structured data. These are REAL posts found on LinkedIn.
+
+Results:
+${results.map((r, i) => `${i+1}. Name from title: "${r.name}"
+   URL: ${r.postUrl}
+   Google snippet: "${r.postSnippet}"`).join('\n\n')}
+
+Return a JSON array. For each result include:
+- id: index as string e.g. "r1"
+- name: the person's full name (from title, clean it up)
+- title: infer their likely job title from context (e.g. "VP of Engineering", "Head of Product") — say "Hiring Manager" if unclear
+- company: infer company name from snippet/URL if possible, otherwise "Unknown"
+- companySize: infer or say "Unknown"
+- postSnippet: the Google snippet cleaned up — this is their REAL post text
+- postUrl: exact URL as provided
+- postDate: "recently" (we don't know exact date)
+- connections: "2nd" (default — unknown)
+- mutualConnections: 0
+- techStack: array of up to 3 technologies mentioned in the snippet, empty array if none
+
+Return ONLY the raw JSON array. No markdown.`;
+
+  const leads = await callClaude(key, prompt, 2000);
+  return leads;
 }
 
 // ── Score leads ────────────────────────────────────────────────────────────
