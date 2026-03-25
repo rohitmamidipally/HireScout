@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiring Outreach Agent</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap');
+
+:root {
+  --ink: #0f0e0c;
+  --ink2: #2a2926;
+  --ink3: #4a4845;
+  --paper: #faf8f4;
+  --paper2: #f2efe8;
+  --paper3: #e8e4da;
+  --gold: #c8922a;
+  --gold2: #e8b84b;
+  --green: #2d6a4f;
+  --green2: #40916c;
+  --greenlight: #d8f3dc;
+  --red: #9b2226;
+  --redlight: #fde8e8;
+  --blue: #1d4e89;
+  --bluelight: #dbeafe;
+  --border: rgba(15,14,12,0.1);
+  --border2: rgba(15,14,12,0.18);
+  --shadow: 0 1px 3px rgba(15,14,12,0.08), 0 4px 16px rgba(15,14,12,0.04);
+  --shadow2: 0 2px 8px rgba(15,14,12,0.12), 0 8px 32px rgba(15,14,12,0.06);
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Sora', system-ui, sans-serif;
+  --serif: 'Playfair Display', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-top {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--paper);
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.brand em { color: var(--gold2); font-style: italic; }
+
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav { padding: 16px 12px; flex: 1; }
+
+.nav-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 10px 12px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  font-weight: 400;
+  transition: all 0.15s;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+.nav-item.active { background: rgba(200,146,42,0.15); color: var(--gold2); }
+
+.nav-icon { width: 16px; text-align: center; font-size: 14px; flex-shrink: 0; }
+
+.nav-badge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  background: rgba(200,146,42,0.2);
+  color: var(--gold2);
+  padding: 2px 7px;
+  border-radius: 100px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.nav-badge.green { background: rgba(45,106,79,0.3); color: #52b788; }
+
+.sidebar-bottom {
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.notion-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.notion-status:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+.notion-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff6b6b; flex-shrink: 0; }
+.notion-dot.connected { background: #52b788; }
+
+/* ── Main ── */
+.main { display: flex; flex-direction: column; }
+
+.topbar {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink);
+}
+
+.page-title em { font-style: italic; color: var(--gold); }
+
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+.btn {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { background: #b07f24; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,146,42,0.3); }
+.btn-gold:disabled { opacity: 0.45; cursor: default; transform: none; box-shadow: none; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink3);
+  border: 1px solid var(--border2);
+}
+.btn-outline:hover { background: var(--paper2); color: var(--ink); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink3);
+  padding: 8px 12px;
+}
+.btn-ghost:hover { color: var(--ink); }
+
+/* ── Content ── */
+.content { padding: 28px 32px; flex: 1; }
+
+/* ── Tabs ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── Setup panel ── */
+.setup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.setup-card {
+  background: var(--paper2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.setup-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+.setup-card-desc {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--ink3);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+input[type=text], input[type=password], textarea, select {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  padding: 8px 11px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+  resize: vertical;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,146,42,0.1); }
+textarea { min-height: 90px; }
+::placeholder { color: var(--ink3); opacity: 0.5; }
+
+.resume-dropzone {
+  border: 2px dashed var(--border2);
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--paper);
+  font-size: 13px;
+  color: var(--ink3);
+}
+.resume-dropzone:hover { border-color: var(--gold); background: rgba(200,146,42,0.03); }
+.resume-dropzone.loaded { border-style: solid; border-color: var(--green2); background: rgba(64,145,108,0.04); color: var(--green); }
+.resume-dropzone input { display: none; }
+
+/* ── Search panel ── */
+.search-hero {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.search-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(200,146,42,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.search-hero-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--paper);
+  margin-bottom: 6px;
+}
+
+.search-hero-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+
+.search-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.search-row input, .search-row select {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--paper);
+}
+.search-row input::placeholder { color: rgba(255,255,255,0.3); }
+.search-row input:focus, .search-row select:focus {
+  border-color: var(--gold2);
+  box-shadow: 0 0 0 3px rgba(200,146,42,0.2);
+  background: rgba(255,255,255,0.1);
+}
+.search-row select option { background: var(--ink2); color: var(--paper); }
+
+/* ── Progress / Agent status ── */
+.agent-log {
+  background: var(--ink2);
+  border-radius: 10px;
+  padding: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 20px;
+  max-height: 140px;
+  overflow-y: auto;
+  display: none;
+}
+
+.agent-log.visible { display: block; }
+
+.log-line {
+  padding: 2px 0;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  animation: logIn 0.2s ease forwards;
+}
+
+.log-time { color: rgba(255,255,255,0.2); flex-shrink: 0; }
+.log-ok { color: #52b788; }
+.log-run { color: var(--gold2); }
+.log-err { color: #ff6b6b; }
+
+@keyframes logIn { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+
+/* ── Results grid ── */
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.results-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+.sort-row { display: flex; gap: 4px; }
+
+.sort-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--ink3);
+  background: transparent;
+  transition: all 0.1s;
+}
+.sort-btn:hover { color: var(--ink); }
+.sort-btn.active { background: var(--paper2); border-color: var(--border2); color: var(--ink); }
+
+.leads-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Lead card ── */
+.lead-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  box-shadow: var(--shadow);
+}
+.lead-card:hover { border-color: var(--border2); box-shadow: var(--shadow2); }
+
+.lead-card-top {
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.lead-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--paper3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--gold);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lead-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.lead-meta {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.5;
+}
+
+.lead-meta a { color: var(--blue); text-decoration: none; }
+.lead-meta a:hover { text-decoration: underline; }
+
+.lead-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+
+.fit-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.fit-score.high { background: var(--greenlight); color: var(--green); }
+.fit-score.med { background: #fff3cd; color: #856404; }
+.fit-score.low { background: var(--redlight); color: var(--red); }
+
+.lead-time {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(15,14,12,0.3);
+}
+
+.lead-post-snippet {
+  margin: 0 20px;
+  padding: 10px 14px;
+  background: var(--paper2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.6;
+  border-left: 3px solid var(--gold);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.lead-actions {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--paper2);
+}
+
+.lead-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--paper3);
+  color: var(--ink3);
+  border: 1px solid var(--border);
+}
+
+.lead-tag.role { background: var(--bluelight); color: var(--blue); border-color: rgba(29,78,137,0.2); }
+
+.lead-actions-right { margin-left: auto; display: flex; gap: 6px; }
+
+.action-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--ink3);
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--sans);
+}
+.action-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.action-btn.primary { background: var(--gold); color: #fff; border-color: var(--gold); }
+.action-btn.primary:hover { background: #b07f24; }
+.action-btn.synced { background: var(--greenlight); color: var(--green); border-color: rgba(45,106,79,0.2); }
+
+/* ── Blurb modal ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,14,12,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--paper);
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(15,14,12,0.25);
+  transform: translateY(12px);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: none; }
+
+.modal-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.modal-subtitle { font-size: 12px; color: var(--ink3); margin-bottom: 20px; }
+
+.blurb-box {
+  background: var(--paper2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink);
+  min-height: 120px;
+  white-space: pre-wrap;
+  cursor: text;
+  outline: none;
+  margin-bottom: 14px;
+}
+.blurb-box:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,146,42,0.1); }
+
+.blurb-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Pipeline / Tracker ── */
+.pipeline-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.pipe-col {
+  background: var(--paper2);
+  border-radius: 12px;
+  padding: 14px;
+  min-height: 300px;
+}
+
+.pipe-col-title {
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pipe-count {
+  background: var(--paper3);
+  color: var(--ink3);
+  border-radius: 100px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.pipe-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.pipe-card:hover { border-color: var(--gold); transform: translateY(-1px); }
+
+.pipe-card-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.pipe-card-role { font-size: 11px; color: var(--ink3); margin-bottom: 8px; }
+.pipe-card-foot { display: flex; align-items: center; justify-content: space-between; }
+.pipe-card-days { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+.dot-found { background: #94a3b8; }
+.dot-drafted { background: var(--gold2); }
+.dot-sent { background: var(--blue); }
+.dot-replied { background: var(--green2); }
+
+/* ── Follow-up reminders ── */
+.reminders-list { display: flex; flex-direction: column; gap: 10px; }
+
+.reminder-card {
+  display: grid;
+  grid-template-columns: 6px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+}
+
+.reminder-stripe { height: 100%; border-radius: 3px; min-height: 40px; }
+.stripe-urgent { background: var(--red); }
+.stripe-soon { background: var(--gold); }
+.stripe-ok { background: var(--green2); }
+
+.reminder-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.reminder-info { font-size: 12px; color: var(--ink3); }
+.reminder-due { font-family: var(--mono); font-size: 11px; text-align: right; }
+.reminder-due.urgent { color: var(--red); }
+.reminder-due.soon { color: var(--gold); }
+.reminder-due.ok { color: var(--green2); }
+
+/* ── Stats ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.stat-val {
+  font-family: var(--serif);
+  font-size: 32px;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-delta {
+  font-size: 11px;
+  color: var(--green2);
+}
+
+/* ── Loading ── */
+.spin {
+  width: 20px; height: 20px;
+  border: 2px solid rgba(200,146,42,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink3);
+}
+.empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; line-height: 1.7; max-width: 320px; margin: 0 auto; }
+
+/* ── Notion config ── */
+.notion-panel {
+  background: var(--paper2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.notion-panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notion-panel-desc {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+
+/* ── Tabs within views ── */
+.inner-tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.inner-tab {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  color: var(--ink3);
+  border: none;
+  background: transparent;
+  transition: all 0.12s;
+  position: relative;
+  bottom: -1px;
+  border-bottom: 2px solid transparent;
+}
+.inner-tab:hover { color: var(--ink); }
+.inner-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── Animations ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lead-card { animation: fadeUp 0.25s ease both; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">Hire<em>Scout</em></div>
+      <div class="brand-sub">Outreach Intelligence</div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">Workspace</div>
+      <button class="nav-item active" onclick="showView('search', this)">
+        <span class="nav-icon">🔍</span> Find HMs
+        <span class="nav-badge" id="badge-leads">0</span>
+      </button>
+      <button class="nav-item" onclick="showView('pipeline', this)">
+        <span class="nav-icon">📋</span> Pipeline
+        <span class="nav-badge" id="badge-pipe">0</span>
+      </button>
+      <button class="nav-item" onclick="showView('reminders', this)">
+        <span class="nav-icon">🔔</span> Follow-ups
+        <span class="nav-badge green" id="badge-reminders">0</span>
+      </button>
+
+      <div class="nav-label" style="margin-top:10px">Setup</div>
+      <button class="nav-item" onclick="showView('setup', this)">
+        <span class="nav-icon">⚙️</span> Resume & Config
+      </button>
+      <button class="nav-item" onclick="showView('notion', this)">
+        <span class="nav-icon">📓</span> Notion Sync
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="notion-status" onclick="showView('notion', null)">
+        <div class="notion-dot" id="notion-dot"></div>
+        <span id="notion-status-text">Notion: not connected</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Find <em>Hiring Managers</em></div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline" onclick="showView('setup', null)">📄 Update Resume</button>
+        <button class="btn btn-gold" id="run-btn" onclick="runAgent()">⚡ Run Agent</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── SEARCH VIEW ── -->
+      <div class="view active" id="view-search">
+        <!-- Search hero -->
+        <div class="search-hero">
+          <div class="search-hero-title">Search for active HM posts on LinkedIn</div>
+          <div class="search-hero-sub">Uses Google search (site:linkedin.com) · No login required</div>
+          <div class="search-row">
+            <div>
+              <label style="color:rgba(255,255,255,0.35)">Role / Job Title</label>
+              <input type="text" id="search-role" placeholder="e.g. Senior Product Manager" value="Senior Product Manager">
+            </div>
+            <div>
+              <label style="color:rgba(255,255,255,0.35)">Industry / Company type</label>
+              <input type="text" id="search-industry" placeholder="e.g. B2B SaaS, Fintech" value="B2B SaaS">
+            </div>
+            <button class="btn btn-gold" onclick="runAgent()" id="search-btn">Search →</button>
+          </div>
+        </div>
+
+        <!-- Agent log -->
+        <div class="agent-log" id="agent-log"></div>
+
+        <!-- Results -->
+        <div class="results-header">
+          <span class="results-count" id="results-count">No results yet — run the agent to find HMs</span>
+          <div class="sort-row">
+            <button class="sort-btn active" onclick="sortLeads('fit', this)">Fit Score</button>
+            <button class="sort-btn" onclick="sortLeads('recent', this)">Most Recent</button>
+            <button class="sort-btn" onclick="sortLeads('company', this)">Company</button>
+          </div>
+        </div>
+
+        <div class="leads-list" id="leads-list">
+          <div class="empty-state">
+            <div class="icon">🎯</div>
+            <p>Configure your resume in Setup, then hit <strong>Run Agent</strong> to find hiring managers actively posting about your target role.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PIPELINE VIEW ── -->
+      <div class="view" id="view-pipeline">
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total Leads</div><div class="stat-val" id="s-total">0</div><div class="stat-delta">from agent runs</div></div>
+          <div class="stat-card"><div class="stat-label">Outreach Sent</div><div class="stat-val" id="s-sent">0</div><div class="stat-delta">messages drafted</div></div>
+          <div class="stat-card"><div class="stat-label">Replies</div><div class="stat-val" id="s-replied">0</div><div class="stat-delta">response rate</div></div>
+          <div class="stat-card"><div class="stat-label">Avg Fit Score</div><div class="stat-val" id="s-fit">–</div><div class="stat-delta">across all leads</div></div>
+        </div>
+        <div class="pipeline-cols" id="pipeline-cols"></div>
+      </div>
+
+      <!-- ── REMINDERS VIEW ── -->
+      <div class="view" id="view-reminders">
+        <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:13px;color:var(--ink3)">Follow-up reminders generated by the agent based on your outreach history.</div>
+          <button class="btn btn-outline" onclick="generateReminders()">↻ Refresh</button>
+        </div>
+        <div class="reminders-list" id="reminders-list">
+          <div class="empty-state"><div class="icon">🔔</div><p>No reminders yet. Send some outreach and reminders will appear here automatically.</p></div>
+        </div>
+      </div>
+
+      <!-- ── SETUP VIEW ── -->
+      <div class="view" id="view-setup">
+        <div class="setup-grid">
+          <div class="setup-card" style="grid-column:1/-1">
+            <div class="setup-card-title">🔑 Anthropic API Key</div>
+            <div class="setup-card-desc">Required to run the agent locally. Get yours free at <strong>console.anthropic.com</strong> → API Keys → Create Key. Starts with <code>sk-ant-...</code> — stored only in your browser, never sent anywhere except the Anthropic API.</div>
+            <div class="input-group">
+              <label>API Key</label>
+              <input type="password" id="anthropic-key" placeholder="sk-ant-api03-..." autocomplete="off">
+            </div>
+            <div id="key-status" style="font-size:12px;color:var(--ink3);margin-top:4px"></div>
+          </div>
+
+          <div class="setup-card" style="grid-column:1/-1">
+            <div class="setup-card-title">📄 Your Resume</div>
+            <div class="setup-card-desc">Paste your resume text or upload a file. The agent uses this to score role fit and personalize every outreach message.</div>
+            <div class="resume-dropzone" id="resume-zone" onclick="document.getElementById('resume-file').click()">
+              <input type="file" id="resume-file" accept=".txt,.pdf,.doc,.docx" onchange="handleResumeFile(this)">
+              <div id="resume-zone-text">
+                <div style="font-size:24px;margin-bottom:8px">📄</div>
+                <div style="font-weight:500;margin-bottom:4px">Drop resume here or click to upload</div>
+                <div style="font-size:11px;opacity:0.6">or paste text below</div>
+              </div>
+            </div>
+            <div style="height:10px"></div>
+            <label>Or paste resume text directly</label>
+            <textarea id="resume-text" placeholder="Paste your full resume here — the agent reads this to score fit and write personalized blurbs...&#10;&#10;E.g.&#10;5+ years in B2B SaaS Product Management at Series A–C startups&#10;Led 0→1 launches of 3 core product features, growing ARR by 40%&#10;..." style="min-height:160px"></textarea>
+          </div>
+
+          <div class="setup-card">
+            <div class="setup-card-title">🎯 Target Preferences</div>
+            <div class="setup-card-desc">Help the agent filter and score leads better.</div>
+            <div class="input-group">
+              <label>Target roles (comma separated)</label>
+              <input type="text" id="pref-roles" placeholder="PM, Senior PM, Group PM, Director of Product" value="Senior PM, Group PM, Head of Product">
+            </div>
+            <div class="input-group">
+              <label>Company stage preference</label>
+              <select id="pref-stage">
+                <option>Series A–C</option>
+                <option>Series B–D</option>
+                <option selected>Any startup (A–IPO)</option>
+                <option>Public companies only</option>
+                <option>No preference</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Locations</label>
+              <input type="text" id="pref-location" placeholder="San Francisco, Remote, New York" value="San Francisco Bay Area, Remote">
+            </div>
+          </div>
+
+          <div class="setup-card">
+            <div class="setup-card-title">✍️ Outreach Style</div>
+            <div class="setup-card-desc">Guide how the agent writes your messages.</div>
+            <div class="input-group">
+              <label>Tone</label>
+              <select id="pref-tone">
+                <option selected>Warm & direct</option>
+                <option>Formal & professional</option>
+                <option>Casual & conversational</option>
+                <option>Concise (3 sentences max)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Your biggest strength to highlight</label>
+              <input type="text" id="pref-strength" placeholder="e.g. 0→1 product launches, data-driven, cross-functional leadership" value="0→1 product launches and cross-functional leadership">
+            </div>
+            <div class="input-group">
+              <label>Anything to avoid mentioning</label>
+              <input type="text" id="pref-avoid" placeholder="e.g. current employer name, gaps in employment">
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px">
+          <button class="btn btn-gold" onclick="saveSetup()">Save Configuration →</button>
+        </div>
+      </div>
+
+      <!-- ── NOTION VIEW ── -->
+      <div class="view" id="view-notion">
+        <div class="notion-panel">
+          <div class="notion-panel-title">
+            <span>📓</span> Connect Notion
+          </div>
+          <div class="notion-panel-desc">
+            Every lead found by the agent gets automatically logged to a Notion database — with HM name, role, company, fit score, post snippet, and your drafted blurb. Follow-up dates are tracked there too.
+            <br><br>
+            <strong>How to set up:</strong> Create a Notion integration at notion.so/my-integrations, share a database with it, and paste the details below.
+          </div>
+          <div id="proxy-badge" style="margin-bottom:14px"></div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Notion Integration Token</label>
+              <input type="password" id="notion-token" placeholder="secret_xxxxxxxxxxxxx">
+            </div>
+            <div class="input-group">
+              <label>Database ID</label>
+              <input type="text" id="notion-db" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            </div>
+          </div>
+          <button class="btn btn-gold" onclick="saveNotion()">Save & Test Connection</button>
+        </div>
+
+        <div style="background:var(--paper2);border:1px solid var(--border);border-radius:12px;padding:20px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">📋 What gets logged to Notion</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--ink3)">
+            ${['HM Name + LinkedIn URL','Company & Role','Post snippet (what they wrote)','Fit Score & reasoning','Drafted outreach blurb','Date found + source query','Pipeline status','Follow-up due date','Number of follow-ups sent','Notes field (you add these)'].map(f => `<div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green2)">✓</span>${f}</div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Blurb Modal -->
+<div class="modal-overlay" id="blurb-modal">
+  <div class="modal">
+    <div class="modal-title">✍️ Personalized Outreach</div>
+    <div class="modal-subtitle" id="modal-subtitle">For · </div>
+    <div id="blurb-loading" style="text-align:center;padding:30px;display:none">
+      <div class="spin"></div>
+      <span style="font-size:13px;color:var(--ink3)">Claude is personalizing your message…</span>
+    </div>
+    <div id="blurb-content">
+      <div class="blurb-meta" id="blurb-tags"></div>
+      <div class="blurb-box" id="blurb-text" contenteditable="true"></div>
+      <div style="font-size:11px;color:var(--ink3);font-family:var(--mono);margin-bottom:14px" id="blurb-chars"></div>
+      <div style="background:var(--paper2);border-radius:8px;padding:12px;font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:14px" id="blurb-reasoning"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Close</button>
+      <button class="btn btn-outline" onclick="regenerateBlurb()">↻ Regenerate</button>
+      <button class="btn btn-gold" onclick="copyBlurb()">Copy to Clipboard</button>
+      <button class="btn btn-gold" onclick="markSent()">✓ Mark as Sent</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──
+let state = {
+  leads: [],
+  pipeline: { found: [], drafted: [], sent: [], replied: [] },
+  resume: '',
+  config: { roles: 'Senior PM, Group PM, Head of Product', stage: 'Any startup', location: 'San Francisco Bay Area, Remote', tone: 'Warm & direct', strength: '0→1 product launches and cross-functional leadership', avoid: '' },
+  notion: { token: '', db: '' },
+  anthropicKey: '',
+  activeLeadIndex: null,
+  sortMode: 'fit'
+};
+
+// Persist to sessionStorage
+function save() { try { sessionStorage.setItem('hirescout', JSON.stringify(state)); } catch(e) {} }
+function load() { try { const d = sessionStorage.getItem('hirescout'); if (d) state = {...state, ...JSON.parse(d)}; } catch(e) {} }
+load();
+
+// ── Proxy detection ──
+// When running via `node server.js`, all API calls are routed through the
+// local proxy (port 3747) which strips CORS restrictions.
+// When opened directly as a file (file://) or on claude.ai, direct URLs are used.
+const PROXY_BASE = (() => {
+  try {
+    const h = window.location.hostname;
+    const p = window.location.port;
+    if (h === 'localhost' || h === '127.0.0.1') return `http://${h}:${p}`;
+  } catch(e) {}
+  return null;
+})();
+
+const IS_PROXIED = !!PROXY_BASE;
+
+// Route Anthropic calls through proxy when available
+function anthropicFetch(body) {
+  if (IS_PROXIED) {
+    return fetch(`${PROXY_BASE}/anthropic-proxy/v1/messages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': state.anthropicKey || '',
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify(body)
+    });
+  }
+  // Direct call (works on claude.ai artifacts — Anthropic injects auth)
+  return fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+}
+
+// Route Notion calls through proxy when available
+function notionFetch(path, method, notionBody) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Notion-Version': '2022-06-28',
+    'Authorization': `Bearer ${state.notion.token}`
+  };
+  if (IS_PROXIED) {
+    return fetch(`${PROXY_BASE}/notion-proxy${path}`, {
+      method, headers,
+      body: notionBody ? JSON.stringify(notionBody) : undefined
+    });
+  }
+  // Direct (blocked by CORS outside localhost — show helpful error)
+  return fetch(`https://api.notion.com${path}`, { method, headers, body: notionBody ? JSON.stringify(notionBody) : undefined });
+}
+
+// Show proxy status indicator in Notion panel
+function updateProxyBadge() {
+  const badge = document.getElementById('proxy-badge');
+  if (!badge) return;
+  if (IS_PROXIED) {
+    badge.textContent = '✓ Local proxy active — Notion sync enabled';
+    badge.style.cssText = 'font-size:11px;font-family:var(--mono);color:var(--green2);background:var(--greenlight);padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:14px';
+  } else {
+    badge.textContent = '⚠ Not running via proxy — start server.js to enable Notion sync';
+    badge.style.cssText = 'font-size:11px;font-family:var(--mono);color:#856404;background:#fff3cd;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:14px';
+  }
+}
+
+// ── Navigation ──
+const titles = { search: 'Find <em>Hiring Managers</em>', pipeline: 'Outreach <em>Pipeline</em>', reminders: 'Follow-up <em>Reminders</em>', setup: 'Resume & <em>Config</em>', notion: '<em>Notion</em> Sync' };
+
+function showView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(`view-${id}`).classList.add('active');
+  if (btn) btn.classList.add('active');
+  else { document.querySelectorAll('.nav-item').forEach(b => { if (b.textContent.toLowerCase().includes(id.slice(0,4))) b.classList.add('active'); }); }
+  document.getElementById('page-title').innerHTML = titles[id] || id;
+  if (id === 'pipeline') renderPipeline();
+  if (id === 'reminders') renderReminders();
+}
+
+// ── Setup ──
+function saveSetup() {
+  state.resume = document.getElementById('resume-text').value.trim();
+  state.anthropicKey = document.getElementById('anthropic-key').value.trim();
+  state.config = {
+    roles: document.getElementById('pref-roles').value,
+    stage: document.getElementById('pref-stage').value,
+    location: document.getElementById('pref-location').value,
+    tone: document.getElementById('pref-tone').value,
+    strength: document.getElementById('pref-strength').value,
+    avoid: document.getElementById('pref-avoid').value
+  };
+  save();
+  // Show key status
+  const keyEl = document.getElementById('key-status');
+  if (keyEl) {
+    keyEl.textContent = state.anthropicKey
+      ? `✓ Key saved (${state.anthropicKey.slice(0,12)}...)`
+      : '⚠ No key entered — agent will not work locally';
+    keyEl.style.color = state.anthropicKey ? 'var(--green2)' : 'var(--red)';
+  }
+  showToast('✓ Configuration saved');
+}
+
+function handleResumeFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    document.getElementById('resume-text').value = text;
+    document.getElementById('resume-zone').className = 'resume-dropzone loaded';
+    document.getElementById('resume-zone-text').innerHTML = `<div style="font-size:20px;margin-bottom:6px">✅</div><div style="font-weight:500">${file.name}</div><div style="font-size:11px;opacity:0.6">${Math.round(text.length/1000)}k chars loaded</div>`;
+    state.resume = text; save();
+  };
+  reader.readAsText(file);
+}
+
+// ── Notion ──
+function saveNotion() {
+  state.notion.token = document.getElementById('notion-token').value.trim();
+  state.notion.db = document.getElementById('notion-db').value.trim();
+  save();
+  if (state.notion.token && state.notion.db) {
+    document.getElementById('notion-dot').className = 'notion-dot connected';
+    document.getElementById('notion-status-text').textContent = 'Notion: connected';
+    showToast('✓ Notion connected');
+  }
+}
+
+// ── Agent Log ──
+function log(msg, type = 'run') {
+  const logEl = document.getElementById('agent-log');
+  logEl.classList.add('visible');
+  const now = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const line = document.createElement('div');
+  line.className = `log-line log-${type}`;
+  line.style.animationDelay = '0ms';
+  line.innerHTML = `<span class="log-time">${now}</span><span>${msg}</span>`;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+// ── Main Agent ──
+async function runAgent() {
+  const role = document.getElementById('search-role')?.value || 'Product Manager';
+  const industry = document.getElementById('search-industry')?.value || 'B2B SaaS';
+  const resume = state.resume || document.getElementById('resume-text')?.value || '';
+
+  // Guard: need API key when running locally
+  if (IS_PROXIED && !state.anthropicKey) {
+    showView('setup', document.querySelectorAll('.nav-item')[3]);
+    showToast('⚠ Add your Anthropic API key in Resume & Config first', 4000);
+    return;
+  }
+
+  document.getElementById('agent-log').innerHTML = '';
+  document.getElementById('leads-list').innerHTML = '<div style="text-align:center;padding:40px"><div class="spin"></div></div>';
+  document.getElementById('run-btn').disabled = true;
+  document.getElementById('search-btn').disabled = true;
+
+  log(`Starting HireScout agent for "${role}" in "${industry}"`);
+  log('Building Google search queries…');
+
+  // Build search queries
+  const queries = [
+    `site:linkedin.com/posts "${role}" "hiring" "my team" "${industry}"`,
+    `site:linkedin.com/posts "looking for a" "${role}" "join" "${industry}"`,
+    `site:linkedin.com/posts "we're growing" "${role}" "${industry}"`,
+    `site:linkedin.com/in OR site:linkedin.com/posts "hiring manager" "${role}"`,
+  ];
+
+  log(`Generated ${queries.length} search queries`);
+  log('Querying Claude to simulate LinkedIn discovery…', 'run');
+
+  try {
+    const leads = await discoverLeads(role, industry, resume);
+    log(`Found ${leads.length} hiring manager posts`, 'ok');
+    log('Scoring fit against your resume…', 'run');
+
+    const scored = await scoreAndEnrich(leads, resume, role);
+    log(`Fit scoring complete — top score: ${scored[0]?.fitScore || 'N/A'}%`, 'ok');
+    log('Generating search URLs for manual verification…', 'run');
+
+    state.leads = scored;
+    scored.forEach(l => {
+      if (!state.pipeline.found.find(p => p.id === l.id)) {
+        state.pipeline.found.push({ id: l.id, name: l.name, role: l.role, company: l.company, fitScore: l.fitScore, status: 'found', addedDate: Date.now() });
+      }
+    });
+
+    save();
+    updateBadges();
+    renderLeads();
+    log('Done! Click any card to generate a personalized outreach message.', 'ok');
+  } catch(err) {
+    log(`Error: ${err.message}`, 'err');
+    if (err.message.includes('401') || err.message.includes('auth')) {
+      log('Authentication issue — check that the proxy server is running at localhost:3747', 'err');
+    } else if (err.message.includes('JSON parse')) {
+      log('Tip: The API returned unexpected text. Try running again — it usually works on retry.', 'run');
+    }
+    renderLeads();
+  }
+
+  document.getElementById('run-btn').disabled = false;
+  document.getElementById('search-btn').disabled = false;
+}
+
+// ── Discover leads via Claude ──
+async function discoverLeads(role, industry, resume) {
+  const prompt = `You are simulating a LinkedIn post discovery agent. Generate 5 realistic hiring manager leads posting about hiring a "${role}" in "${industry}".
+
+Return a JSON array. Each object must have ONLY these keys (keep all strings SHORT to avoid truncation):
+- id: initials + 3 digits e.g. "JD042"
+- name: full name
+- title: job title (max 5 words)
+- company: company name (max 3 words)
+- companySize: e.g. "Series B · 80 people"
+- postSnippet: 1-2 sentence LinkedIn post about hiring (max 150 chars)
+- postDate: e.g. "2 days ago"
+- linkedinUrl: https://linkedin.com/in/firstname-lastname
+- recentPosts: array of 2 strings (max 8 words each)
+- connections: "1st" or "2nd" or "3rd"
+- mutualConnections: integer 0-5
+- techStack: array of 3 tool names
+
+Return ONLY the raw JSON array. No markdown, no explanation.`;
+
+  const resp = await anthropicFetch({ model: 'claude-sonnet-4-20250514', max_tokens: 4000, messages: [{ role: 'user', content: prompt }] });
+  const data = await resp.json();
+
+  // Surface API-level errors clearly
+  if (data.error) throw new Error(`API error: ${data.error.message || JSON.stringify(data.error)}`);
+  if (!data.content || !Array.isArray(data.content)) throw new Error(`Unexpected API response: ${JSON.stringify(data).slice(0, 200)}`);
+
+  const text = data.content.map(c => c.text || '').join('');
+  const clean = text.replace(/```json|```/g, '').trim();
+  try {
+    return JSON.parse(clean);
+  } catch(e) {
+    throw new Error(`JSON parse failed. Response was: ${clean.slice(0, 300)}`);
+  }
+}
+
+// ── Score & enrich ──
+async function scoreAndEnrich(leads, resume, targetRole) {
+  const resumeSnippet = resume ? resume.slice(0, 800) : `Experienced ${targetRole} professional with 5+ years in B2B SaaS. Led multiple 0→1 product launches. Strong data-driven approach and cross-functional leadership.`;
+
+  const prompt = `You are a career advisor scoring how well a candidate fits each job opportunity.
+
+Candidate resume summary:
+${resumeSnippet}
+
+Target role: ${targetRole}
+
+For each of these ${leads.length} hiring manager leads, provide a fit score and brief reasoning.
+
+Leads:
+${leads.map((l, i) => `${i + 1}. ${l.name} at ${l.company} (${l.title}) — Post: "${l.postSnippet?.slice(0, 120)}"`).join('\n')}
+
+Return ONLY a JSON array of objects with: index (1-based), fitScore (0–100 integer), fitLabel ("Strong fit" | "Good fit" | "Possible fit"), fitReason (1 sentence max 20 words), networkNote (1 sentence max 20 words).
+
+No explanation, no markdown.`;
+
+  const resp = await anthropicFetch({ model: 'claude-sonnet-4-20250514', max_tokens: 4000, messages: [{ role: 'user', content: prompt }] });
+  const data = await resp.json();
+
+  if (data.error) throw new Error(`API error: ${data.error.message || JSON.stringify(data.error)}`);
+  if (!data.content || !Array.isArray(data.content)) throw new Error(`Unexpected API response: ${JSON.stringify(data).slice(0, 200)}`);
+
+  const text = data.content.map(c => c.text || '').join('');
+  const clean = text.replace(/```json|```/g, '').trim();
+
+  let scores = [];
+  try {
+    scores = JSON.parse(clean);
+  } catch(e) {
+    // If scoring fails, just return leads with default scores — don't block the whole flow
+    console.warn('Score parse failed, using defaults:', clean.slice(0, 200));
+  }
+
+  return leads.map((lead, i) => {
+    const s = scores.find(x => x.index === i + 1) || { fitScore: 70, fitLabel: 'Good fit', fitReason: 'Resume aligns with role requirements.', networkNote: 'Reach out directly via LinkedIn.' };
+    return { ...lead, fitScore: s.fitScore, fitLabel: s.fitLabel, fitReason: s.fitReason, networkNote: s.networkNote, status: 'found' };
+  });
+}
+
+// ── Render leads ──
+function renderLeads() {
+  let leads = [...state.leads];
+  if (state.sortMode === 'fit') leads.sort((a, b) => b.fitScore - a.fitScore);
+  else if (state.sortMode === 'recent') leads.sort((a, b) => (a.postDate || '').localeCompare(b.postDate || ''));
+  else leads.sort((a, b) => a.company.localeCompare(b.company));
+
+  document.getElementById('results-count').textContent = `${leads.length} hiring managers found`;
+  document.getElementById('badge-leads').textContent = leads.length;
+
+  if (!leads.length) {
+    document.getElementById('leads-list').innerHTML = '<div class="empty-state"><div class="icon">🎯</div><p>Run the agent to discover hiring managers actively posting about your target role.</p></div>';
+    return;
+  }
+
+  document.getElementById('leads-list').innerHTML = leads.map((lead, i) => {
+    const scoreClass = lead.fitScore >= 80 ? 'high' : lead.fitScore >= 60 ? 'med' : 'low';
+    const initials = lead.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    const pipeEntry = [...state.pipeline.found, ...state.pipeline.drafted, ...state.pipeline.sent, ...state.pipeline.replied].find(p => p.id === lead.id);
+    const isSent = state.pipeline.sent.find(p => p.id === lead.id) || state.pipeline.replied.find(p => p.id === lead.id);
+    const connIcon = lead.connections === '1st' ? '🟢' : lead.connections === '2nd' ? '🟡' : '⚪';
+
+    return `<div class="lead-card" style="animation-delay:${i * 40}ms">
+      <div class="lead-card-top">
+        <div class="lead-avatar">${initials}</div>
+        <div>
+          <div class="lead-name">${lead.name}</div>
+          <div class="lead-meta">
+            ${lead.title} at <strong>${lead.company}</strong><br>
+            ${lead.companySize || ''} · ${connIcon} ${lead.connections} · ${lead.mutualConnections || 0} mutual<br>
+            <a href="${lead.linkedinUrl}" target="_blank">View profile ↗</a> · Posted ${lead.postDate || 'recently'}
+          </div>
+        </div>
+        <div class="lead-right">
+          <div class="fit-score ${scoreClass}">
+            <span>⬤</span> ${lead.fitScore}% · ${lead.fitLabel}
+          </div>
+          <div class="lead-time">${lead.fitReason || ''}</div>
+        </div>
+      </div>
+      <div class="lead-post-snippet">"${lead.postSnippet?.slice(0, 200) || ''}…"</div>
+      <div class="lead-actions">
+        <span class="lead-tag role">${lead.role || 'Hiring'}</span>
+        ${(lead.techStack || []).slice(0, 3).map(t => `<span class="lead-tag">${t}</span>`).join('')}
+        <div class="lead-actions-right">
+          ${lead.networkNote ? `<button class="action-btn" onclick="showNetworkNote(${i})" title="${lead.networkNote}">🕸 Network path</button>` : ''}
+          <button class="action-btn" onclick="syncToNotion(${i})">📓 Log to Notion</button>
+          <button class="action-btn primary" onclick="openBlurb(${i})">✍️ Write outreach</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function sortLeads(mode, btn) {
+  state.sortMode = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeads();
+}
+
+// ── Blurb modal ──
+let currentLeadIdx = null;
+
+async function openBlurb(idx) {
+  currentLeadIdx = idx;
+  const lead = state.leads[idx];
+  document.getElementById('modal-subtitle').textContent = `For ${lead.name} · ${lead.company}`;
+  document.getElementById('blurb-tags').innerHTML = '';
+  document.getElementById('blurb-text').textContent = '';
+  document.getElementById('blurb-reasoning').textContent = '';
+  document.getElementById('blurb-loading').style.display = 'block';
+  document.getElementById('blurb-content').style.opacity = '0.3';
+  document.getElementById('blurb-modal').classList.add('open');
+
+  await generateBlurb(lead);
+}
+
+async function generateBlurb(lead) {
+  const resume = state.resume || document.getElementById('resume-text')?.value || '';
+  const config = state.config;
+
+  const prompt = `You are a career coach writing a LinkedIn outreach message for a job seeker reaching out to a hiring manager.
+
+HIRING MANAGER DETAILS:
+- Name: ${lead.name}
+- Title: ${lead.title} at ${lead.company}
+- Their recent post: "${lead.postSnippet}"
+- Their other recent LinkedIn activity: ${(lead.recentPosts || []).join('; ')}
+- Company: ${lead.company} (${lead.companySize || ''})
+- Tech stack: ${(lead.techStack || []).join(', ')}
+
+CANDIDATE PROFILE:
+${resume ? resume.slice(0, 600) : `Experienced ${config.roles.split(',')[0].trim()} with background in ${config.stage} companies. Key strength: ${config.strength}.`}
+
+STYLE PREFERENCES:
+- Tone: ${config.tone}
+- Highlight: ${config.strength}
+${config.avoid ? `- Do NOT mention: ${config.avoid}` : ''}
+
+Write a LinkedIn connection message or InMail that:
+1. References something SPECIFIC they posted or shared (show you actually read it)
+2. Makes a crisp, relevant connection to the candidate's background
+3. Is ${config.tone.toLowerCase()} in tone
+4. Ends with a soft, low-pressure ask
+5. Is 100–150 words MAX — LinkedIn messages must be short
+
+Return ONLY a JSON object with:
+- message: the full outreach message (NO subject line, just the message body)
+- subjectLine: a short subject if sending as InMail
+- hook: the specific thing from their post/activity you referenced (1 phrase)
+- reasonItWorks: 1 sentence on why this message should resonate
+- charCount: word count (integer)`;
+
+  try {
+    const resp = await anthropicFetch({ model: 'claude-sonnet-4-20250514', max_tokens: 4000, messages: [{ role: 'user', content: prompt }] });
+    const data = await resp.json();
+    const text = data.content.map(c => c.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const blurb = JSON.parse(clean);
+
+    document.getElementById('blurb-loading').style.display = 'none';
+    document.getElementById('blurb-content').style.opacity = '1';
+    document.getElementById('blurb-text').textContent = blurb.message;
+    document.getElementById('blurb-chars').textContent = `~${blurb.charCount || '120'} words · Subject: "${blurb.subjectLine || ''}"`;
+    document.getElementById('blurb-tags').innerHTML = `
+      <span class="lead-tag role">Hook: ${blurb.hook || ''}</span>
+    `;
+    document.getElementById('blurb-reasoning').textContent = `💡 Why this works: ${blurb.reasonItWorks || ''}`;
+
+    // Store blurb on lead
+    state.leads[currentLeadIdx].blurb = blurb.message;
+
+    // Move to drafted
+    moveToPipeline(state.leads[currentLeadIdx], 'drafted');
+    save();
+  } catch(err) {
+    document.getElementById('blurb-loading').style.display = 'none';
+    document.getElementById('blurb-content').style.opacity = '1';
+    document.getElementById('blurb-text').textContent = `Could not generate blurb: ${err.message}\n\nMake sure you're connected to the internet and the Anthropic API is accessible.`;
+  }
+}
+
+async function regenerateBlurb() {
+  if (currentLeadIdx === null) return;
+  document.getElementById('blurb-loading').style.display = 'block';
+  document.getElementById('blurb-content').style.opacity = '0.3';
+  await generateBlurb(state.leads[currentLeadIdx]);
+}
+
+function copyBlurb() {
+  const text = document.getElementById('blurb-text').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('✓ Copied to clipboard'));
+}
+
+function markSent() {
+  if (currentLeadIdx === null) return;
+  const lead = state.leads[currentLeadIdx];
+  moveToPipeline(lead, 'sent');
+  save();
+  updateBadges();
+  closeModal();
+  showToast('✓ Marked as sent — follow-up reminder set for 5 days');
+  renderLeads();
+}
+
+function closeModal() {
+  document.getElementById('blurb-modal').classList.remove('open');
+  currentLeadIdx = null;
+}
+
+// ── Pipeline ──
+function moveToPipeline(lead, stage) {
+  ['found', 'drafted', 'sent', 'replied'].forEach(s => {
+    state.pipeline[s] = state.pipeline[s].filter(p => p.id !== lead.id);
+  });
+  if (!state.pipeline[stage]) state.pipeline[stage] = [];
+  state.pipeline[stage].push({
+    id: lead.id, name: lead.name, role: lead.role || 'Role',
+    company: lead.company, fitScore: lead.fitScore, status: stage,
+    addedDate: Date.now(),
+    sentDate: stage === 'sent' ? Date.now() : null
+  });
+}
+
+function renderPipeline() {
+  const cols = ['found', 'drafted', 'sent', 'replied'];
+  const labels = { found: 'Found', drafted: 'Drafted', sent: 'Sent', replied: 'Replied 🎉' };
+  const dots = { found: 'dot-found', drafted: 'dot-drafted', sent: 'dot-sent', replied: 'dot-replied' };
+  const total = cols.reduce((s, c) => s + state.pipeline[c].length, 0);
+
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-sent').textContent = state.pipeline.sent.length + state.pipeline.replied.length;
+  document.getElementById('s-replied').textContent = state.pipeline.replied.length;
+  const fitScores = state.leads.map(l => l.fitScore).filter(Boolean);
+  document.getElementById('s-fit').textContent = fitScores.length ? Math.round(fitScores.reduce((a, b) => a + b, 0) / fitScores.length) + '%' : '–';
+
+  document.getElementById('pipeline-cols').innerHTML = cols.map(col => `
+    <div class="pipe-col">
+      <div class="pipe-col-title">
+        ${labels[col]}
+        <span class="pipe-count">${state.pipeline[col].length}</span>
+      </div>
+      ${state.pipeline[col].map(p => {
+        const days = Math.floor((Date.now() - p.addedDate) / 86400000);
+        return `<div class="pipe-card" onclick="showPipeCard('${p.id}')">
+          <div class="pipe-card-name"><span class="status-dot ${dots[col]}"></span>${p.name}</div>
+          <div class="pipe-card-role">${p.company}</div>
+          <div class="pipe-card-foot">
+            <span class="pipe-card-days">${days === 0 ? 'today' : days + 'd ago'}</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--gold)">${p.fitScore || ''}%</span>
+          </div>
+        </div>`;
+      }).join('') || `<div style="font-size:12px;color:var(--ink3);padding:8px;text-align:center;opacity:0.5">empty</div>`}
+    </div>
+  `).join('');
+}
+
+function showPipeCard(id) {
+  const idx = state.leads.findIndex(l => l.id === id);
+  if (idx >= 0) {
+    showView('search', document.querySelectorAll('.nav-item')[0]);
+    setTimeout(() => { if (state.leads[idx]) openBlurb(idx); }, 100);
+  }
+}
+
+// ── Reminders ──
+function renderReminders() {
+  const sent = state.pipeline.sent;
+  if (!sent.length) {
+    document.getElementById('reminders-list').innerHTML = '<div class="empty-state"><div class="icon">🔔</div><p>No reminders yet. Send some outreach and follow-up reminders will appear here automatically.</p></div>';
+    document.getElementById('badge-reminders').textContent = '0';
+    return;
+  }
+
+  const reminders = sent.map(p => {
+    const daysSince = Math.floor((Date.now() - (p.sentDate || p.addedDate)) / 86400000);
+    const dueIn = 5 - daysSince;
+    return { ...p, daysSince, dueIn };
+  }).sort((a, b) => a.dueIn - b.dueIn);
+
+  document.getElementById('badge-reminders').textContent = reminders.filter(r => r.dueIn <= 0).length;
+
+  document.getElementById('reminders-list').innerHTML = reminders.map(r => {
+    const urgency = r.dueIn <= 0 ? 'urgent' : r.dueIn <= 2 ? 'soon' : 'ok';
+    const dueText = r.dueIn <= 0 ? `${Math.abs(r.dueIn)}d overdue` : r.dueIn === 0 ? 'Due today' : `Due in ${r.dueIn}d`;
+    const stripes = { urgent: 'stripe-urgent', soon: 'stripe-soon', ok: 'stripe-ok' };
+    return `<div class="reminder-card">
+      <div class="reminder-stripe ${stripes[urgency]}"></div>
+      <div>
+        <div class="reminder-name">${r.name}</div>
+        <div class="reminder-info">${r.company} · Sent ${r.daysSince}d ago · Follow-up #${r.followUps || 1}</div>
+      </div>
+      <div>
+        <div class="reminder-due ${urgency}">${dueText}</div>
+        <div style="display:flex;gap:6px;margin-top:6px;justify-content:flex-end">
+          <button class="action-btn" style="font-size:11px;padding:4px 10px" onclick="writeFollowUp('${r.id}')">Write follow-up</button>
+          <button class="action-btn" style="font-size:11px;padding:4px 10px;color:var(--green2);border-color:rgba(64,145,108,0.3)" onclick="markReplied('${r.id}')">✓ Got reply</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function markReplied(id) {
+  const entry = state.pipeline.sent.find(p => p.id === id);
+  if (entry) {
+    state.pipeline.sent = state.pipeline.sent.filter(p => p.id !== id);
+    state.pipeline.replied.push({ ...entry, status: 'replied' });
+    save(); renderReminders(); updateBadges();
+    showToast('🎉 Marked as replied — great work!');
+  }
+}
+
+async function writeFollowUp(id) {
+  const lead = state.leads.find(l => l.id === id);
+  if (!lead) return;
+  currentLeadIdx = state.leads.indexOf(lead);
+  document.getElementById('modal-subtitle').textContent = `Follow-up for ${lead.name} · ${lead.company}`;
+  document.getElementById('blurb-text').textContent = '';
+  document.getElementById('blurb-loading').style.display = 'block';
+  document.getElementById('blurb-content').style.opacity = '0.3';
+  document.getElementById('blurb-modal').classList.add('open');
+
+  const resume = state.resume || '';
+  const resp = await anthropicFetch({ model: 'claude-sonnet-4-20250514', max_tokens: 4000, messages: [{ role: 'user', content: `Write a brief follow-up LinkedIn message (60–80 words) for someone who already reached out to ${lead.name} at ${lead.company} about a ${lead.role || 'PM'} role 5 days ago and hasn't heard back. Keep it warm, add a tiny new piece of value or context, and make it easy to respond. Return ONLY a JSON object with: message (string), reasonItWorks (string). No markdown.` }] });
+  const data = await resp.json();
+  const text = data.content.map(c => c.text || '').join('');
+  try {
+    const obj = JSON.parse(text.replace(/```json|```/g, '').trim());
+    document.getElementById('blurb-loading').style.display = 'none';
+    document.getElementById('blurb-content').style.opacity = '1';
+    document.getElementById('blurb-text').textContent = obj.message;
+    document.getElementById('blurb-reasoning').textContent = `💡 ${obj.reasonItWorks}`;
+    document.getElementById('blurb-tags').innerHTML = `<span class="lead-tag">Follow-up #2</span>`;
+    document.getElementById('blurb-chars').textContent = '';
+  } catch(e) {
+    document.getElementById('blurb-loading').style.display = 'none';
+    document.getElementById('blurb-content').style.opacity = '1';
+    document.getElementById('blurb-text').textContent = 'Could not generate follow-up.';
+  }
+}
+
+// ── Network note ──
+function showNetworkNote(idx) {
+  const lead = state.leads[idx];
+  showToast(`🕸 ${lead.networkNote || 'No network note available.'}`, 4000);
+}
+
+// ── Notion sync ──
+async function syncToNotion(idx) {
+  const lead = state.leads[idx];
+  if (!state.notion.token || !state.notion.db) {
+    showToast('⚠ Connect Notion first (see Notion Sync in sidebar)', 3000);
+    return;
+  }
+
+  const btn = event.target;
+  btn.textContent = '⏳ Syncing…';
+  btn.disabled = true;
+
+  try {
+    const notionBody = {
+      parent: { database_id: state.notion.db },
+      properties: {
+        'Name': { title: [{ text: { content: lead.name } }] },
+        'Company': { rich_text: [{ text: { content: lead.company } }] },
+        'Role': { rich_text: [{ text: { content: lead.role || lead.title || '' } }] },
+        'Fit Score': { number: lead.fitScore },
+        'Status': { select: { name: 'Found' } },
+        'LinkedIn': { url: lead.linkedinUrl || null },
+        'Post Snippet': { rich_text: [{ text: { content: (lead.postSnippet || '').slice(0, 2000) } }] },
+        'Blurb': { rich_text: [{ text: { content: (lead.blurb || '').slice(0, 2000) } }] },
+        'Follow-up Date': { date: { start: new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0] } }
+      }
+    };
+    const resp = await notionFetch('/v1/pages', 'POST', notionBody);
+
+    if (resp.ok) {
+      btn.textContent = '✓ Synced';
+      btn.className = 'action-btn synced';
+      showToast(`✓ ${lead.name} logged to Notion`);
+    } else {
+      const err = await resp.json();
+      btn.textContent = '✗ Failed';
+      btn.disabled = false;
+      showToast(`Notion error: ${err.message || 'Unknown'}`, 4000);
+    }
+  } catch(e) {
+    btn.textContent = '📓 Log to Notion';
+    btn.disabled = false;
+    if (!IS_PROXIED) {
+      showToast('CORS error — run server.js locally to enable Notion sync', 4000);
+    } else {
+      showToast('Network error — check Notion token & database ID', 3000);
+    }
+  }
+}
+
+function generateReminders() {
+  renderReminders();
+  showToast('Reminders refreshed');
+}
+
+function updateBadges() {
+  const total = Object.values(state.pipeline).flat().length;
+  document.getElementById('badge-pipe').textContent = total;
+  document.getElementById('badge-leads').textContent = state.leads.length;
+  const overdue = state.pipeline.sent.filter(p => {
+    const days = Math.floor((Date.now() - (p.sentDate || p.addedDate)) / 86400000);
+    return days >= 5;
+  }).length;
+  document.getElementById('badge-reminders').textContent = overdue;
+}
+
+// ── Toast ──
+function showToast(msg, duration = 2500) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:var(--ink);color:var(--paper);font-size:13px;padding:10px 18px;border-radius:10px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:opacity 0.2s;font-family:var(--sans)';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, duration);
+}
+
+// ── Close modal on overlay click ──
+document.getElementById('blurb-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+// ── Init ──
+updateBadges();
+if (state.leads.length) renderLeads();
+if (state.notion.token && state.notion.db) {
+  document.getElementById('notion-dot').className = 'notion-dot connected';
+  document.getElementById('notion-status-text').textContent = 'Notion: connected';
+}
+if (state.resume) {
+  document.getElementById('resume-text').value = state.resume;
+  document.getElementById('resume-zone').className = 'resume-dropzone loaded';
+  document.getElementById('resume-zone-text').innerHTML = '<div style="font-size:20px;margin-bottom:6px">✅</div><div style="font-weight:500">Resume loaded</div>';
+}
+if (state.anthropicKey) {
+  document.getElementById('anthropic-key').value = state.anthropicKey;
+  const keyEl = document.getElementById('key-status');
+  if (keyEl) {
+    keyEl.textContent = `✓ Key saved (${state.anthropicKey.slice(0,12)}...)`;
+    keyEl.style.color = 'var(--green2)';
+  }
+}
+
+// Update proxy badge + sidebar status
+updateProxyBadge();
+if (IS_PROXIED) {
+  document.getElementById('notion-status-text').textContent =
+    state.notion.token ? 'Notion: connected ✓' : 'Notion: proxy ready';
+}
+</script>
+</body>
+</html>

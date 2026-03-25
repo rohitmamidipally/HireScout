@@ -1,0 +1,16 @@
+{
+  "name": "hirescout-proxy",
+  "version": "1.0.0",
+  "description": "Local proxy server for HireScout — bypasses CORS for Notion & Anthropic APIs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
