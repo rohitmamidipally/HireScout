@@ -1006,53 +1006,87 @@ async function runAgent() {
   document.getElementById('run-btn').disabled = false;
 }
 
-// ── Discover leads — REAL Google search ────────────────────────────────────
+// ── Discover leads — Real Google search + Claude fallback ──────────────────
 const SEARCH_URL = 'https://hirescout-proxy.rohit-united.workers.dev/v1/search';
 
-async function discoverLeads(key, role, searchContext) {
-  // Step 1: Get real LinkedIn posts from Google
-  const resp = await fetch(SEARCH_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ role, location: searchContext, industry: '' })
-  });
+async function discoverLeads(key, role, location) {
+  // Step 1: Try real Google search
+  let results = [];
+  try {
+    const resp = await fetch(SEARCH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role, location })
+    });
+    const data = await resp.json();
+    results = data.results || [];
+  } catch(e) {
+    log(`  Google search error: ${e.message}`, 'err');
+  }
 
-  const data = await resp.json();
-  if (data.error) throw new Error(data.error);
+  if (results.length > 0) {
+    log(`  Found ${results.length} real LinkedIn results via Google ✓`, 'ok');
+    log(`  Enriching with Claude…`);
 
-  const results = data.results || [];
-  if (results.length === 0) throw new Error('No LinkedIn posts found for this search. Try a different role or location.');
-
-  log(`  Found ${results.length} real LinkedIn posts via Google ✓`, 'ok');
-  log(`  Enriching with Claude…`);
-
-  // Step 2: Use Claude to extract structured info from real Google snippets
-  const prompt = `You are parsing real Google search results for LinkedIn posts to extract hiring manager info.
-
-For each result below, extract structured data. These are REAL posts found on LinkedIn.
+    // Enrich real results with Claude
+    const prompt = `Parse these real Google search results for LinkedIn posts about hiring a "${role}".
 
 Results:
-${results.map((r, i) => `${i+1}. Name from title: "${r.name}"
+${results.map((r, i) => `${i+1}. Name: "${r.name}"
    URL: ${r.postUrl}
-   Google snippet: "${r.postSnippet}"`).join('\n\n')}
+   Snippet: "${r.postSnippet}"`).join('\n\n')}
 
-Return a JSON array. For each result include:
-- id: index as string e.g. "r1"
-- name: the person's full name (from title, clean it up)
-- title: infer their likely job title from context (e.g. "VP of Engineering", "Head of Product") — say "Hiring Manager" if unclear
-- company: infer company name from snippet/URL if possible, otherwise "Unknown"
-- companySize: infer or say "Unknown"
-- postSnippet: the Google snippet cleaned up — this is their REAL post text
-- postUrl: exact URL as provided
-- postDate: "recently" (we don't know exact date)
-- connections: "2nd" (default — unknown)
+Return a JSON array. For each result:
+- id: "r" + index
+- name: clean full name
+- title: infer job title from context or "Hiring Manager"
+- company: infer from snippet/URL or "Unknown"
+- companySize: infer or "Unknown"
+- postSnippet: cleaned snippet text (real content)
+- postUrl: exact URL as given
+- postDate: "recently"
+- connections: "2nd"
 - mutualConnections: 0
-- techStack: array of up to 3 technologies mentioned in the snippet, empty array if none
+- techStack: up to 3 techs mentioned, empty array if none
 
 Return ONLY the raw JSON array. No markdown.`;
 
-  const leads = await callClaude(key, prompt, 2000);
-  return leads;
+    try {
+      return await callClaude(key, prompt, 2000);
+    } catch(e) {
+      // If Claude enrichment fails, return raw results
+      return results.map((r, i) => ({
+        id: `r${i}`, name: r.name, title: 'Hiring Manager',
+        company: 'Unknown', companySize: 'Unknown',
+        postSnippet: r.postSnippet, postUrl: r.postUrl,
+        postDate: 'recently', connections: '2nd',
+        mutualConnections: 0, techStack: []
+      }));
+    }
+  }
+
+  // Fallback: Claude simulation with clear labeling
+  log(`  No Google results found — using AI-generated leads (clearly labeled)`, 'run');
+  const prompt = `Generate 5 realistic hiring manager leads for a "${role}" role in "${location}".
+These are SIMULATED examples to demonstrate the tool while Google results are unavailable.
+
+Return a JSON array with:
+- id: "sim" + index
+- name: realistic full name
+- title: realistic job title
+- company: realistic company name
+- companySize: e.g. "Series B · 80 people"
+- postSnippet: realistic LinkedIn post about hiring (prefix with "[SIMULATED] ")
+- postUrl: https://linkedin.com/search/results/people/?keywords=${encodeURIComponent(role)}
+- postDate: "recently"
+- connections: "2nd"
+- mutualConnections: 0
+- techStack: array of 3 tools
+
+Return ONLY the raw JSON array. No markdown.`;
+
+  const simLeads = await callClaude(key, prompt, 2000);
+  return simLeads;
 }
 
 // ── Score leads ────────────────────────────────────────────────────────────
