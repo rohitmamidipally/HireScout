@@ -840,7 +840,6 @@ textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
 
 <script>
 // ── State ──────────────────────────────────────────────────────────────────
-const PROXY_KEY = 'sk-ant-api03-DEMO_KEY_FOR_FREE_RUNS'; // placeholder — free runs use demo path
 const FREE_RUNS_MAX = 3;
 
 let roles = [];
@@ -907,12 +906,17 @@ function log(msg, type = 'run') {
 }
 
 // ── API call ───────────────────────────────────────────────────────────────
+const PROXY_URL = 'https://hirescout-proxy.rohit-united.workers.dev/v1/messages';
+
 async function callClaude(apiKey, prompt, maxTokens = 4000) {
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+  const isFreeRun = !apiKey || apiKey === 'FREE';
+  const resp = await fetch(PROXY_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
+      ...(isFreeRun
+        ? { 'x-free-run': 'true' }
+        : { 'x-api-key': apiKey }),
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
@@ -951,7 +955,7 @@ async function runAgent() {
     return;
   }
 
-  const key = apiKey || PROXY_KEY;
+  const key = apiKey || userKey || 'FREE';
 
   // UI setup
   document.getElementById('run-btn').disabled = true;
