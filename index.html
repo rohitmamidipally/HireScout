@@ -1034,6 +1034,7 @@ async function discoverLeads(key, role, location) {
 Results:
 ${results.map((r, i) => `${i+1}. Name: "${r.name}"
    URL: ${r.postUrl}
+   Date: ${r.postDate || 'recently'}
    Snippet: "${r.postSnippet}"`).join('\n\n')}
 
 Return a JSON array. For each result:
@@ -1044,7 +1045,7 @@ Return a JSON array. For each result:
 - companySize: infer or "Unknown"
 - postSnippet: cleaned snippet text (real content)
 - postUrl: exact URL as given
-- postDate: "recently"
+- postDate: use the real date provided (e.g. "2 days ago", "1 week ago", "3 weeks ago")
 - connections: "2nd"
 - mutualConnections: 0
 - techStack: up to 3 techs mentioned, empty array if none
@@ -1059,7 +1060,7 @@ Return ONLY the raw JSON array. No markdown.`;
         id: `r${i}`, name: r.name, title: 'Hiring Manager',
         company: 'Unknown', companySize: 'Unknown',
         postSnippet: r.postSnippet, postUrl: r.postUrl,
-        postDate: 'recently', connections: '2nd',
+        postDate: r.postDate || 'recently', connections: '2nd',
         mutualConnections: 0, techStack: []
       }));
     }
