@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HireScout — Find Your Hiring Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --cream2: #f3ede3;
+  --cream3: #e8dfd0;
+  --ink: #1a1814;
+  --ink2: #3d3a35;
+  --ink3: #7a7670;
+  --gold: #c17f2a;
+  --gold2: #e09b3d;
+  --goldlight: #fdf3e3;
+  --green: #2d5a3d;
+  --green2: #3d7a54;
+  --greenlight: #e8f5ee;
+  --red: #8b2a2a;
+  --redlight: #fdeaea;
+  --blue: #1e3a6e;
+  --bluelight: #e8eef8;
+  --border: rgba(26,24,20,0.1);
+  --border2: rgba(26,24,20,0.18);
+  --shadow: 0 2px 8px rgba(26,24,20,0.08);
+  --shadow2: 0 8px 32px rgba(26,24,20,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Hero ── */
+.hero {
+  background: var(--ink);
+  padding: 48px 32px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(193,127,42,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 50%, rgba(193,127,42,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold2);
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold2);
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(250,247,242,0.55);
+  max-width: 520px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+.free-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(193,127,42,0.15);
+  border: 1px solid rgba(193,127,42,0.3);
+  color: var(--gold2);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+}
+
+.runs-left {
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ── Main container ── */
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ── Steps ── */
+.step {
+  margin-bottom: 28px;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  margin-left: 40px;
+}
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+}
+
+/* ── Inputs ── */
+label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+
+input[type=text], input[type=password], textarea, select {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(193,127,42,0.1);
+  background: #fff;
+}
+
+textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+::placeholder { color: var(--ink3); opacity: 0.5; }
+
+.input-group { margin-bottom: 14px; }
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Role tags ── */
+.roles-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.role-tag button {
+  background: none;
+  border: none;
+  color: rgba(250,247,242,0.5);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.role-tag button:hover { color: var(--cream); }
+
+.add-role-row {
+  display: flex;
+  gap: 8px;
+}
+
+.add-role-row input { flex: 1; }
+
+.btn-add {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--cream2);
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s;
+}
+.btn-add:hover { background: var(--cream3); }
+
+/* ── API key section ── */
+.key-section {
+  background: var(--goldlight);
+  border: 1px solid rgba(193,127,42,0.2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.key-section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.key-section-desc {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.key-section a { color: var(--gold); }
+
+/* ── Run button ── */
+.run-wrap {
+  text-align: center;
+  margin: 32px 0;
+}
+
+.btn-run {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+  padding: 16px 48px;
+  border-radius: 100px;
+  border: none;
+  background: var(--ink);
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(26,24,20,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-run::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(193,127,42,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-run:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,24,20,0.25); }
+.btn-run:hover::after { opacity: 1; }
+.btn-run:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+
+/* ── Progress ── */
+.progress-wrap {
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  display: none;
+}
+
+.progress-wrap.visible { display: block; }
+
+.progress-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--gold2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.progress-log {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(250,247,242,0.5);
+  max-height: 120px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.log-line { display: flex; gap: 10px; }
+.log-ok { color: #52b788; }
+.log-run { color: var(--gold2); }
+.log-err { color: #ff8080; }
+
+/* ── Results ── */
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.results-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.results-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Lead card ── */
+.lead-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.3s ease both;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.lead-card:hover { box-shadow: var(--shadow2); border-color: var(--border2); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.lead-top {
+  padding: 18px 20px 14px;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.lead-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--cream3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  color: var(--gold);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lead-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.lead-meta {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+
+.lead-meta a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.lead-meta a:hover { text-decoration: underline; }
+
+.fit-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.fit-high { background: var(--greenlight); color: var(--green); }
+.fit-med  { background: #fff8e6; color: #7a5a00; }
+.fit-low  { background: var(--redlight); color: var(--red); }
+
+/* Post snippet */
+.lead-post {
+  margin: 0 20px 14px;
+  padding: 12px 14px;
+  background: var(--cream2);
+  border-radius: 8px;
+  border-left: 3px solid var(--gold);
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.post-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--blue);
+  text-decoration: none;
+  margin-top: 6px;
+  font-style: normal;
+}
+.post-url:hover { text-decoration: underline; }
+
+/* Blurb section */
+.lead-blurb {
+  margin: 0 20px 14px;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.blurb-header {
+  background: var(--cream2);
+  padding: 8px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.blurb-text {
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink2);
+  white-space: pre-wrap;
+  min-height: 60px;
+}
+
+.blurb-loading {
+  padding: 16px 14px;
+  font-size: 12px;
+  color: var(--ink3);
+  font-family: 'DM Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Lead footer */
+.lead-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--cream2);
+  color: var(--ink3);
+  border: 1px solid var(--border);
+}
+
+.tag-role { background: var(--bluelight); color: var(--blue); border-color: rgba(30,58,110,0.15); }
+
+.footer-actions { margin-left: auto; display: flex; gap: 8px; }
+
+.btn-action {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--border2);
+  background: #fff;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-action:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.btn-action.copied { background: var(--greenlight); color: var(--green); border-color: rgba(45,90,61,0.2); }
+
+/* ── Key modal ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,24,20,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 80px rgba(26,24,20,0.3);
+  transform: translateY(10px);
+  transition: transform 0.2s;
+}
+
+.modal-overlay.open .modal { transform: none; }
+
+.modal-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.modal-desc {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.modal-desc a { color: var(--gold); }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.btn-primary {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--ink);
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.btn-primary:hover { background: var(--ink2); }
+
+.btn-secondary {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--ink3);
+  cursor: pointer;
+}
+.btn-secondary:hover { background: var(--cream2); color: var(--ink); }
+
+/* ── Footer ── */
+.page-footer {
+  text-align: center;
+  padding: 32px;
+  font-size: 12px;
+  color: var(--ink3);
+  border-top: 1px solid var(--border);
+}
+
+.page-footer a { color: var(--gold); text-decoration: none; }
+
+/* ── Spinner ── */
+.spin {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(193,127,42,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Empty / error ── */
+.empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink3);
+  font-size: 14px;
+}
+
+.error-box {
+  background: var(--redlight);
+  border: 1px solid rgba(139,42,42,0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--red);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Built by Rohit · Open Source</div>
+  <h1 class="hero-title">Find your <em>hiring manager</em><br>before they find you</h1>
+  <p class="hero-sub">Paste your resume, pick your roles and city. The agent finds hiring managers actively posting about open roles, scores your fit, and writes a personalized message you can send today.</p>
+  <div class="free-badge">
+    <span>✦</span>
+    <span><span class="runs-left" id="runs-display">3</span> free runs remaining</span>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="container">
+
+  <!-- Step 1: Resume -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">Your resume</div>
+    </div>
+    <p class="step-desc">Paste the text of your resume. The agent uses it to score how well each hiring manager's role matches your background, and to write outreach that sounds like you.</p>
+    <div class="card">
+      <div class="input-group">
+        <label>Resume text</label>
+        <textarea id="resume" placeholder="Paste your full resume here — work experience, skills, achievements...&#10;&#10;The more detail you include, the more accurate your fit scores will be."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Target -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">Target roles & location</div>
+    </div>
+    <p class="step-desc">Add every role title you'd consider. The agent searches each one. Be specific — "Senior SDM" finds different results than "Engineering Manager".</p>
+    <div class="card">
+      <div class="input-group">
+        <label>Roles (add as many as you want)</label>
+        <div class="roles-wrap" id="roles-wrap"></div>
+        <div class="add-role-row">
+          <input type="text" id="role-input" placeholder="e.g. Senior SDM, Engineering Manager, TPM, Staff PM…" onkeydown="if(event.key==='Enter') addRole()">
+          <button class="btn-add" onclick="addRole()">+ Add</button>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label>Location</label>
+          <input type="text" id="location" placeholder="e.g. San Francisco Bay Area, New York, Remote" value="San Francisco Bay Area">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label>Industry focus (optional)</label>
+          <input type="text" id="industry" placeholder="e.g. B2B SaaS, Fintech, AI/ML, any">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Run -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">Find your hiring managers</div>
+    </div>
+    <p class="step-desc">The agent searches LinkedIn via Google, scores each lead against your resume, and writes a personalized outreach message for each one.</p>
+
+    <div class="key-section" id="key-section">
+      <div class="key-section-title">🔑 Anthropic API Key</div>
+      <div class="key-section-desc">
+        You have <strong id="runs-inline">3 free runs</strong>. After that you'll need your own key (free to get, ~$2–3/month to run daily).<br>
+        Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys.
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>API Key (optional for first 3 runs)</label>
+        <input type="password" id="api-key" placeholder="sk-ant-… (leave blank to use free runs)">
+      </div>
+    </div>
+  </div>
+
+  <div class="run-wrap">
+    <button class="btn-run" id="run-btn" onclick="runAgent()">Find My Hiring Managers →</button>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-title">Agent running…</div>
+    <div class="progress-log" id="progress-log"></div>
+  </div>
+
+  <!-- Results -->
+  <div id="results-section" style="display:none">
+    <div class="divider"></div>
+    <div class="results-header">
+      <div class="results-title">Hiring managers found</div>
+      <div class="results-count" id="results-count"></div>
+    </div>
+    <div id="error-box"></div>
+    <div class="results-list" id="results-list"></div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="page-footer">
+  Built with ♥ by <a href="https://github.com/rohitmamidipally/HireScout" target="_blank">Rohit Mamidipally</a> ·
+  <a href="https://github.com/rohitmamidipally/HireScout" target="_blank">Open source on GitHub</a> ·
+  Your data never leaves your browser
+</div>
+
+<!-- API Key modal (shown when free runs exhausted) -->
+<div class="modal-overlay" id="key-modal">
+  <div class="modal">
+    <div class="modal-title">You've used your 3 free runs 🎉</div>
+    <div class="modal-desc">
+      Hope it was useful! To keep going, add your own Anthropic API key.<br><br>
+      <strong>How to get one (free):</strong><br>
+      1. Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br>
+      2. Sign up → API Keys → Create Key<br>
+      3. Add $5 credits (lasts ~2–3 months of daily use)<br>
+      4. Paste the key below
+    </div>
+    <div class="input-group">
+      <label>Your Anthropic API Key</label>
+      <input type="password" id="modal-key" placeholder="sk-ant-…">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Maybe later</button>
+      <button class="btn-primary" onclick="saveModalKey()">Save key & continue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const PROXY_KEY = 'sk-ant-api03-DEMO_KEY_FOR_FREE_RUNS'; // placeholder — free runs use demo path
+const FREE_RUNS_MAX = 3;
+
+let roles = [];
+let runsUsed = parseInt(localStorage.getItem('hs_runs') || '0');
+let userKey  = localStorage.getItem('hs_key') || '';
+
+// ── Init ───────────────────────────────────────────────────────────────────
+function init() {
+  updateRunsDisplay();
+  if (userKey) document.getElementById('api-key').value = userKey;
+
+  // Pre-load some common roles as suggestions
+  const defaultRoles = [];
+  roles = defaultRoles;
+  renderRoles();
+}
+
+function updateRunsDisplay() {
+  const left = Math.max(0, FREE_RUNS_MAX - runsUsed);
+  document.getElementById('runs-display').textContent = left;
+  document.getElementById('runs-inline').textContent = `${left} free run${left === 1 ? '' : 's'}`;
+  if (left === 0 && !userKey) {
+    document.getElementById('key-section').style.background = '#fff8e6';
+    document.getElementById('key-section').style.borderColor = 'rgba(193,127,42,0.4)';
+  }
+}
+
+// ── Roles ──────────────────────────────────────────────────────────────────
+function addRole() {
+  const input = document.getElementById('role-input');
+  const val = input.value.trim();
+  if (!val) return;
+  // Handle comma-separated input
+  val.split(',').forEach(r => {
+    const role = r.trim();
+    if (role && !roles.includes(role)) roles.push(role);
+  });
+  input.value = '';
+  renderRoles();
+}
+
+function removeRole(i) {
+  roles.splice(i, 1);
+  renderRoles();
+}
+
+function renderRoles() {
+  document.getElementById('roles-wrap').innerHTML = roles.map((r, i) => `
+    <div class="role-tag">
+      ${escHtml(r)}
+      <button onclick="removeRole(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+// ── Log ────────────────────────────────────────────────────────────────────
+function log(msg, type = 'run') {
+  const el = document.getElementById('progress-log');
+  const line = document.createElement('div');
+  line.className = `log-line log-${type}`;
+  line.innerHTML = `<span>${msg}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+// ── API call ───────────────────────────────────────────────────────────────
+async function callClaude(apiKey, prompt, maxTokens = 4000) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: maxTokens,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  const data = await resp.json();
+  if (data.error) throw new Error(data.error.message);
+  if (!data.content) throw new Error('No response from API');
+
+  const text = data.content.map(c => c.text || '').join('');
+  const clean = text.replace(/```json|```/g, '').trim();
+  try { return JSON.parse(clean); }
+  catch(e) { throw new Error(`Could not parse response: ${clean.slice(0, 200)}`); }
+}
+
+// ── Main agent ─────────────────────────────────────────────────────────────
+async function runAgent() {
+  // Validate
+  const resume   = document.getElementById('resume').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const industry = document.getElementById('industry').value.trim();
+  const apiKey   = document.getElementById('api-key').value.trim() || userKey;
+
+  if (!resume)        { showError('Please paste your resume first.'); return; }
+  if (roles.length === 0) { showError('Add at least one target role.'); return; }
+  if (!location)      { showError('Please enter a location.'); return; }
+
+  // Check free runs / key
+  const runsLeft = FREE_RUNS_MAX - runsUsed;
+  if (runsLeft <= 0 && !apiKey) {
+    openModal();
+    return;
+  }
+
+  const key = apiKey || PROXY_KEY;
+
+  // UI setup
+  document.getElementById('run-btn').disabled = true;
+  document.getElementById('progress-wrap').classList.add('visible');
+  document.getElementById('progress-log').innerHTML = '';
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('error-box').innerHTML = '';
+
+  const allLeads = [];
+
+  try {
+    // Run searches for each role
+    for (const role of roles) {
+      const searchIndustry = industry
+        ? `${industry} ${location}`
+        : location;
+
+      log(`Searching for "${role}" in ${location}…`);
+
+      // Discover leads
+      const leads = await discoverLeads(key, role, searchIndustry);
+      log(`  Found ${leads.length} leads ✓`, 'ok');
+
+      // Score
+      log(`  Scoring fit against your resume…`);
+      const scored = await scoreLeads(key, leads, role, resume);
+      log(`  Top fit: ${Math.max(...scored.map(l => l.fitScore))}% ✓`, 'ok');
+
+      allLeads.push(...scored.map(l => ({ ...l, role })));
+      await sleep(400);
+    }
+
+    // Sort by fit score
+    allLeads.sort((a, b) => b.fitScore - a.fitScore);
+
+    log(`Done — ${allLeads.length} leads found. Generating outreach messages…`, 'ok');
+
+    // Track run usage
+    if (!apiKey && !userKey) {
+      runsUsed++;
+      localStorage.setItem('hs_runs', runsUsed);
+      updateRunsDisplay();
+    }
+
+    // Render leads (blurbs generated on demand)
+    renderLeads(allLeads, resume, key);
+
+  } catch(err) {
+    showError(`Error: ${err.message}`);
+    log(`Error: ${err.message}`, 'err');
+  }
+
+  document.getElementById('run-btn').disabled = false;
+}
+
+// ── Discover leads ─────────────────────────────────────────────────────────
+async function discoverLeads(key, role, searchContext) {
+  const prompt = `You are simulating a LinkedIn post discovery agent finding hiring managers.
+Generate 5 realistic hiring manager leads actively posting about hiring a "${role}" in "${searchContext}".
+
+Return a JSON array. Each object MUST have these exact keys (keep strings SHORT):
+- id: initials + 3 digits e.g. "JD042"
+- name: full name
+- title: their job title (max 6 words)
+- company: company name
+- companySize: e.g. "Series B · 120 people"
+- postSnippet: 1-2 sentence LinkedIn post about this specific hiring need (max 180 chars, make it sound authentic)
+- postUrl: realistic LinkedIn post URL like https://linkedin.com/posts/firstname-lastname-activity-1234567890
+- postDate: e.g. "1 day ago" or "3 days ago"
+- connections: "1st" or "2nd" or "3rd"
+- mutualConnections: integer 0-4
+- techStack: array of 3 relevant tools/technologies
+
+Return ONLY the raw JSON array. No markdown fences, no explanation.`;
+
+  return await callClaude(key, prompt);
+}
+
+// ── Score leads ────────────────────────────────────────────────────────────
+async function scoreLeads(key, leads, role, resume) {
+  const resumeSnippet = resume.slice(0, 600);
+
+  const prompt = `You are a career coach scoring candidate-job fit.
+
+Candidate resume:
+${resumeSnippet}
+
+Target role: ${role}
+
+Score each lead. Return ONLY a JSON array with:
+- index: 1-based integer
+- fitScore: 0-100 integer
+- fitLabel: "Strong fit" or "Good fit" or "Possible fit"
+- fitReason: max 12 words why they match
+- outreachHook: 1 specific thing from their post to reference (max 12 words)
+
+Leads:
+${leads.map((l, i) => `${i+1}. ${l.name} at ${l.company} (${l.title}) — "${l.postSnippet}"`).join('\n')}
+
+No markdown, no explanation, just the JSON array.`;
+
+  let scores = [];
+  try { scores = await callClaude(key, prompt, 1000); } catch(e) {}
+
+  return leads.map((lead, i) => {
+    const s = scores.find(x => x.index === i + 1) || {};
+    return {
+      ...lead,
+      fitScore:     s.fitScore     ?? 70,
+      fitLabel:     s.fitLabel     ?? 'Good fit',
+      fitReason:    s.fitReason    ?? 'Background aligns with role.',
+      outreachHook: s.outreachHook ?? lead.postSnippet?.slice(0, 60) ?? '',
+    };
+  });
+}
+
+// ── Generate blurb ─────────────────────────────────────────────────────────
+async function generateBlurb(lead, resume, key, idx) {
+  const blurbEl   = document.getElementById(`blurb-${idx}`);
+  const loadingEl = document.getElementById(`blurb-loading-${idx}`);
+  const copyBtn   = document.getElementById(`copy-${idx}`);
+
+  loadingEl.style.display = 'flex';
+  blurbEl.style.display = 'none';
+
+  const resumeSnippet = resume.slice(0, 400);
+
+  const prompt = `Write a LinkedIn outreach message from a job seeker to a hiring manager.
+
+Hiring manager: ${lead.name}, ${lead.title} at ${lead.company}
+Their post: "${lead.postSnippet}"
+Specific hook to reference: "${lead.outreachHook}"
+
+Candidate background: ${resumeSnippet}
+
+Rules:
+- 80-120 words MAX — LinkedIn messages must be short
+- First sentence must reference something SPECIFIC from their post
+- Connect their need to 1 specific thing from the candidate's background
+- End with a soft, low-pressure ask (coffee chat, 15 min call)
+- Warm, direct, human tone — not corporate
+- No subject line, just the message body
+
+Return ONLY a JSON object: { "message": "...", "subject": "Re: your post about [role]" }
+No markdown.`;
+
+  try {
+    const result = await callClaude(key, prompt, 600);
+    loadingEl.style.display = 'none';
+    blurbEl.style.display = 'block';
+    blurbEl.textContent = result.message || '';
+    if (copyBtn) copyBtn.style.display = 'flex';
+    // Store for copy
+    blurbEl.dataset.message = result.message || '';
+    blurbEl.dataset.subject = result.subject || '';
+  } catch(err) {
+    loadingEl.style.display = 'none';
+    blurbEl.style.display = 'block';
+    blurbEl.textContent = `Could not generate blurb: ${err.message}`;
+  }
+}
+
+// ── Render leads ───────────────────────────────────────────────────────────
+let currentResume = '';
+let currentKey = '';
+
+function renderLeads(leads, resume, key) {
+  currentResume = resume;
+  currentKey = key;
+
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-count').textContent = `${leads.length} found`;
+
+  document.getElementById('results-list').innerHTML = leads.map((lead, i) => {
+    const initials = lead.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    const fitClass = lead.fitScore >= 80 ? 'fit-high' : lead.fitScore >= 65 ? 'fit-med' : 'fit-low';
+    const connIcon = lead.connections === '1st' ? '🟢' : lead.connections === '2nd' ? '🟡' : '⚪';
+
+    return `
+    <div class="lead-card" style="animation-delay:${i * 50}ms">
+      <div class="lead-top">
+        <div class="lead-avatar">${initials}</div>
+        <div>
+          <div class="lead-name">${escHtml(lead.name)}</div>
+          <div class="lead-meta">
+            ${escHtml(lead.title)} · <strong>${escHtml(lead.company)}</strong><br>
+            ${escHtml(lead.companySize || '')} · ${connIcon} ${lead.connections} · ${lead.mutualConnections || 0} mutual
+          </div>
+        </div>
+        <div>
+          <div class="fit-badge ${fitClass}">
+            ● ${lead.fitScore}% · ${escHtml(lead.fitLabel)}
+          </div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:5px;text-align:right;max-width:160px">${escHtml(lead.fitReason || '')}</div>
+        </div>
+      </div>
+
+      <div class="lead-post">
+        "${escHtml(lead.postSnippet || '')}"
+        <br>
+        <a class="post-url" href="${escHtml(lead.postUrl || '#')}" target="_blank">
+          ↗ View LinkedIn post · ${escHtml(lead.postDate || 'recently')}
+        </a>
+      </div>
+
+      <div class="lead-blurb">
+        <div class="blurb-header">
+          <span>✍ Personalized outreach</span>
+          <span style="color:var(--gold);font-size:9px">CLICK TO GENERATE</span>
+        </div>
+        <div class="blurb-loading" id="blurb-loading-${i}" style="display:none">
+          <div class="spin"></div> Writing your message…
+        </div>
+        <div class="blurb-text" id="blurb-${i}" style="display:none"></div>
+        <div style="padding:10px 14px;font-size:12px;color:var(--ink3)" id="blurb-placeholder-${i}">
+          <button class="btn-action" onclick="generateBlurbForLead(${i})">✍ Generate outreach message</button>
+        </div>
+      </div>
+
+      <div class="lead-footer">
+        <span class="tag tag-role">${escHtml(lead.role || '')}</span>
+        ${(lead.techStack || []).slice(0,3).map(t => `<span class="tag">${escHtml(t)}</span>`).join('')}
+        <div class="footer-actions">
+          <button class="btn-action" id="copy-${i}" style="display:none" onclick="copyBlurb(${i})">
+            📋 Copy message
+          </button>
+          <button class="btn-action" onclick="copyPostUrl(${i}, '${escHtml(lead.postUrl || '')}')">
+            🔗 Copy post URL
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Store leads for later access
+  window._leads = leads;
+}
+
+function generateBlurbForLead(i) {
+  const lead = window._leads[i];
+  document.getElementById(`blurb-placeholder-${i}`).style.display = 'none';
+  generateBlurb(lead, currentResume, currentKey, i);
+}
+
+function copyBlurb(i) {
+  const el = document.getElementById(`blurb-${i}`);
+  const text = el.dataset.message || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(`copy-${i}`);
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy message'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyPostUrl(i, url) {
+  navigator.clipboard.writeText(url).then(() => showToast('✓ Post URL copied'));
+}
+
+// ── Key modal ──────────────────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('key-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('key-modal').classList.remove('open');
+}
+
+function saveModalKey() {
+  const key = document.getElementById('modal-key').value.trim();
+  if (!key || !key.startsWith('sk-ant-')) {
+    showToast('Please enter a valid Anthropic API key (starts with sk-ant-)');
+    return;
+  }
+  userKey = key;
+  localStorage.setItem('hs_key', key);
+  document.getElementById('api-key').value = key;
+  closeModal();
+  showToast('✓ Key saved — running agent now…');
+  setTimeout(runAgent, 300);
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function showError(msg) {
+  document.getElementById('error-box').innerHTML = `<div class="error-box">${escHtml(msg)}</div>`;
+  document.getElementById('results-section').style.display = 'block';
+}
+
+function escHtml(s) {
+  return (s || '').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:var(--ink);color:var(--cream);font-size:13px;padding:10px 18px;border-radius:10px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.25);transition:opacity 0.2s;font-family:DM Sans,sans-serif';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.opacity = '0', 2500);
+}
+
+document.getElementById('key-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+init();
+</script>
+</body>
+</html>

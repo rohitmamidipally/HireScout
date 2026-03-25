@@ -100,6 +100,7 @@ Return a JSON array. Each object must have ONLY these keys (keep all strings SHO
 - company: company name (max 3 words)
 - companySize: e.g. "Series B · 80 people"
 - postSnippet: 1-2 sentence LinkedIn post about hiring (max 150 chars)
+- postUrl: realistic LinkedIn post URL like https://linkedin.com/posts/firstname-lastname-activity-1234567890
 - postDate: e.g. "2 days ago"
 - linkedinUrl: https://linkedin.com/in/firstname-lastname
 - recentPosts: array of 2 strings describing recent LinkedIn activity (max 8 words each)
@@ -208,7 +209,7 @@ async function logToNotion(lead, blurb) {
         'Role':           { rich_text: [{ text: { content: lead.role || '' } }] },
         'Fit Score':      { number: lead.fitScore },
         'Status':         { select: { name: 'Found' } },
-        'LinkedIn':       { url: lead.linkedinUrl || null },
+        'LinkedIn':       { url: lead.postUrl || lead.linkedinUrl || null },
         'Post Snippet':   { rich_text: [{ text: { content: (lead.postSnippet || '').slice(0, 2000) } }] },
         'Blurb':          { rich_text: [{ text: { content: (blurb || '').slice(0, 2000) } }] },
         'Follow-up Date': { date: { start: followUpDate } },
