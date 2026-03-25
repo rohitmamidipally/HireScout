@@ -775,7 +775,7 @@ textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
     <div class="key-section" id="key-section">
       <div class="key-section-title">🔑 Anthropic API Key</div>
       <div class="key-section-desc">
-        You have <strong id="runs-inline">3 free runs</strong>. After that you'll need your own key (free to get, ~$2–3/month to run daily).<br>
+        You have <strong id="runs-inline">20 free runs</strong>. After that you'll need your own key (free to get, ~$2–3/month to run daily).<br>
         Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys.
       </div>
       <div class="input-group" style="margin-bottom:0">
@@ -818,9 +818,9 @@ textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
 <!-- API Key modal (shown when free runs exhausted) -->
 <div class="modal-overlay" id="key-modal">
   <div class="modal">
-    <div class="modal-title">You've used your 3 free runs 🎉</div>
+    <div class="modal-title">You've used your 20 free runs 🎉</div>
     <div class="modal-desc">
-      Hope it was useful! To keep going, add your own Anthropic API key.<br><br>
+      Hope it's been useful for your job search! To keep going, add your own Anthropic API key.<br><br>
       <strong>How to get one (free):</strong><br>
       1. Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br>
       2. Sign up → API Keys → Create Key<br>
@@ -840,7 +840,7 @@ textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
 
 <script>
 // ── State ──────────────────────────────────────────────────────────────────
-const FREE_RUNS_MAX = 3;
+const FREE_RUNS_MAX = 20;
 
 let roles = [];
 let runsUsed = parseInt(localStorage.getItem('hs_runs') || '0');
